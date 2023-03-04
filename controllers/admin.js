@@ -11,14 +11,14 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
+  const imageURL = req.body.imageURL;
   const price = req.body.price;
   const description = req.body.description;
   const product = new Product({
     title: title,
     price: price,
     description: description,
-    imageUrl: imageUrl,
+    imageURL: imageURL,
     userId: req.user,
   });
   product
@@ -59,7 +59,7 @@ exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
-  const updatedImageUrl = req.body.imageUrl;
+  const updatedImageURL = req.body.imageURL;
   const updatedDesc = req.body.description;
 
   Product.findById(prodId)
@@ -67,7 +67,7 @@ exports.postEditProduct = (req, res, next) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.description = updatedDesc;
-      product.imageUrl = updatedImageUrl;
+      product.imageURL = updatedImageURL;
       return product.save();
     })
     .then((result) => {
@@ -83,7 +83,7 @@ exports.getAdminProducts = (req, res, next) => {
     // .populate('userId', 'name')
     .then((products) => {
       console.log(products);
-      res.render("admin/products", {
+      res.render("admin/product-list", {
         prods: products,
         pageTitle: "Admin Products",
         path: "/admin/products",
