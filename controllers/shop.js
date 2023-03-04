@@ -39,6 +39,7 @@ exports.getIndex = (req, res, next) => {
         pageTitle: "Shop",
         path: "/",
         isAuthenticated: req.session.isLoggedIn,
+        csrfToken: req.csrfToken(),
       });
     })
     .catch((err) => {
@@ -51,6 +52,7 @@ exports.getCart = (req, res, next) => {
     .populate("cart.items.productId")
     .then((user) => {
       const products = user.cart.items;
+      console.log("products", products);
       res.render("shop/cart", {
         path: "/cart",
         pageTitle: "Your Cart",
@@ -92,7 +94,7 @@ exports.postOrder = (req, res, next) => {
       });
       const order = new Order({
         user: {
-          name: req.user.name,
+          email: req.user.email,
           userId: req.user,
         },
         products: products,
