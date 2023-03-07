@@ -17,12 +17,6 @@ $ cd express-mongoose
 $ npm install
 ````
 
-## Building
-
-To build the project, run:
-````
-npm run build
-````
 
 ## Introduction
 
