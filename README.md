@@ -1,4 +1,4 @@
-# search-hotel
+# Test project
 
 ## Technologies
 **  **
