@@ -8,9 +8,6 @@ Simple MVC project using:
 * Mongoose is an Object-Document Mapping (ODM) library for Node.js and MongoDB.
 * EJS (Embedded JavaScript) is a templating engine for JavaScript that allows developers to generate dynamic HTML pages
 
-## Ecosystem
-
-
 ## Installation
 
 To install run the following commands:
@@ -46,7 +43,8 @@ The following pages are currently implemented:
 | Edit product      | /admin/edit-product/:productId    | logged in user                     | Editing information about an already existing product.                                                                                                      |  
 
 At the moment, all data is stored on the **MongoDB Atlas cloud service**.
+Access to the database is currently only allowed for individual IP addresses.
 
-## Functional 
-  
+The **node.bcrypt.js** library is used to encrypt the password.
+
 
