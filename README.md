@@ -1,4 +1,4 @@
-# Test project
+# Shop (test project)
 
 Currently under development.
 
