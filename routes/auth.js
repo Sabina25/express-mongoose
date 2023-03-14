@@ -1,7 +1,8 @@
 const express = require("express");
-const { check, body } = require("express-validator/check");
+const { check, body } = require("express-validator");
 
 const authController = require("../controllers/auth");
+const User = require("../models/user");
 
 const router = express.Router();
 
@@ -12,10 +13,14 @@ router.get("/signup", authController.getSignup);
 router.post(
   "/login",
   [
-    body("email").isEmail().withMessage("Please enter a valid email address."),
+    body("email")
+      .isEmail()
+      .withMessage("Please enter a valid email address.")
+      .normalizeEmail(),
     body("password", "Password has to be valid.")
-      .isLength({ min: 5 })
-      .isAlphanumeric(),
+      .isLength({ min: 8 })
+      .isAlphanumeric()
+      .trim(),
   ],
   authController.postLogin
 );
@@ -38,19 +43,23 @@ router.post(
             );
           }
         });
-      }),
+      })
+      .normalizeEmail(),
     body(
       "password",
-      "Please enter a password with only numbers and text and at least 8 characters."
+      "Please enter a password with only numbers and text and at least 5 characters."
     )
       .isLength({ min: 8 })
-      .isAlphanumeric(),
-    body("confirmPassword").custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error("Passwords have to match!");
-      }
-      return true;
-    }),
+      .isAlphanumeric()
+      .trim(),
+    body("confirmPassword")
+      .trim()
+      .custom((value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error("Passwords have to match!");
+        }
+        return true;
+      }),
   ],
   authController.postSignup
 );
@@ -61,7 +70,7 @@ router.get("/reset", authController.getReset);
 
 router.post("/reset", authController.postReset);
 
-router.get("/new-password", authController.getNewPassword);
+router.get("/reset/:token", authController.getNewPassword);
 
 router.post("/new-password", authController.postNewPassword);
 

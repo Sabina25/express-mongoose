@@ -1,8 +1,9 @@
-const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+
+const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
-const { validationResult } = require("express-validator/check");
+const { validationResult } = require("express-validator");
 
 const User = require("../models/user");
 
@@ -32,6 +33,7 @@ exports.getLogin = (req, res, next) => {
     validationErrors: [],
   });
 };
+
 exports.getSignup = (req, res, next) => {
   let message = req.flash("error");
   if (message.length > 0) {
@@ -126,8 +128,8 @@ exports.postSignup = (req, res, next) => {
       pageTitle: "Signup",
       errorMessage: errors.array()[0].msg,
       oldInput: {
-        email,
-        password,
+        email: email,
+        password: password,
         confirmPassword: req.body.confirmPassword,
       },
       validationErrors: errors.array(),
@@ -148,7 +150,7 @@ exports.postSignup = (req, res, next) => {
       res.redirect("/login");
       // return transporter.sendMail({
       //   to: email,
-      //   from: 'shop@test.com',
+      //   from: 'shop@node-complete.com',
       //   subject: 'Signup succeeded!',
       //   html: '<h1>You successfully signed up!</h1>'
       // });
@@ -174,7 +176,7 @@ exports.getReset = (req, res, next) => {
   }
   res.render("auth/reset", {
     path: "/reset",
-    pageTitle: "Reset password",
+    pageTitle: "Reset Password",
     errorMessage: message,
   });
 };
@@ -200,7 +202,7 @@ exports.postReset = (req, res, next) => {
         res.redirect("/");
         transporter.sendMail({
           to: req.body.email,
-          from: "kadyrova19@gmail.com",
+          from: "shop@node-complete.com",
           subject: "Password reset",
           html: `
             <p>You requested a password reset</p>
@@ -229,6 +231,7 @@ exports.getNewPassword = (req, res, next) => {
         pageTitle: "New Password",
         errorMessage: message,
         userId: user._id.toString(),
+        passwordToken: token,
       });
     })
     .catch((err) => {
